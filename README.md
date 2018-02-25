@@ -91,6 +91,10 @@ $grids: (
 @include tiny-grid($grids);
 ```
 
+## Installation
+
+We don't need fancy installers. Copy [this file](https://github.com/benkyriakou/tiny-grid/blob/master/scss/tiny-grid.scss) into your project. Include it in your `main.scss`. Bam. Done.
+
 ## Tests
 
 Tests are written using the [True framework](https://github.com/oddbird/true), and can be invoked by installing the npm dependencies with `npm install`, then running `npm test`.
