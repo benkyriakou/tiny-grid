@@ -1,0 +1,17 @@
+@import 'tiny-grid';
+
+$grids: (
+  main: (
+    columns: 12,
+    gap: 1rem,
+    props: (
+      background: purple,
+    ),
+  ),
+  sub: (
+    columns: 2,
+    gap: 1rem,
+  )
+);
+
+@include tiny-grid($grids);

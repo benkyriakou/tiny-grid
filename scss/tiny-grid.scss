@@ -1,0 +1,66 @@
+@function is-plain-integer($v) {
+  @if type-of($v) == 'number' and unitless($v) and round($v) == $v {
+    @return true;
+  }
+
+  @return false;
+}
+
+@mixin map-to-css($map) {
+  @if type-of($map) == 'map' {
+    @each $prop, $val in $map {
+      #{$prop}: #{$val};
+    }
+  }
+  @else {
+    @error 'Cannot output a non-map value #{$map} as CSS.'
+  }
+}
+
+@mixin tiny-grid($grids) {
+  $max-columns: 0;
+
+  // Create the main class for each defined grid.
+  @each $name, $grid in $grids {
+    $gap: map-get($grid, 'gap');
+    $columns: map-get($grid, 'columns');
+
+    @if not is-plain-integer($columns) {
+      @error 'The number of columns must be a plain integer. #{$columns} is invalid.';
+    }
+
+    @if $columns < 1 {
+      @error 'The number of columns must be greater than 0. #{$columns is invalid}';
+    }
+
+    .grid-#{$columns} {
+      display: grid;
+      grid-template-columns: repeat($columns, 1fr);
+      grid-gap: $gap;
+
+      $props: map-get($grid, 'props');
+
+      @if $props {
+        @include map-to-css($props);
+      }
+    }
+
+    @if $columns > $max-columns {
+      $max-columns: $columns;
+    }
+  }
+
+  // Create 'push-' classes for offsetting columns.
+  @for $i from 1 to $max-columns {
+    .push-#{$i} {
+      grid-column-start: $i + 1;
+    }
+  }
+
+  // Create 'span-' classes for altering the width of columns.
+  @for $i from 1 to $max-columns + 1 {
+    .span-#{$i} {
+      grid-column-end: span $i;
+    }
+  }
+}

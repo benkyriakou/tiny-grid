@@ -1,0 +1,55 @@
+$grids: (
+  main: (
+    columns: 12,
+    gap: 1rem,
+  ),
+);
+
+$_grid-test-mode: true;
+
+@import '../scss/tiny-grid.scss';
+@import 'true';
+
+@include describe('map-to-css mixin') {
+  @include it('Converts a mixin to a set of CSS properties') {
+    $map: (
+      color: #000,
+      width: 100px,
+    );
+
+    @include assert {
+      @include output {
+        @include map-to-css($map);
+      }
+
+      @include expect {
+        color: #000;
+        width: 100px;
+      }
+    }
+  }
+}
+
+@include describe('is-plain-integer function') {
+  @include it('Checks whether a value is a plain integer') {
+    @include assert-equal(is-plain-integer(3), true);
+  }
+
+  @include it('Checks whether a value with units is a plain integer') {
+    @include assert-equal(is-plain-integer(3px), false);
+  }
+
+  @include it('Checks whether a map value is a plain integer') {
+    @include assert-equal(is-plain-integer((foo: bar)), false);
+  }
+
+  @include it('Checks whether a list value is a plain integer') {
+    @include assert-equal(is-plain-integer((3,)), false);
+  }
+
+  @include it('Checks whether a string value is a plain integer') {
+    @include assert-equal(is-plain-integer('3'), false);
+  }
+}
+
+@include report;
