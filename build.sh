@@ -7,4 +7,4 @@ then
 fi
 
 echo "Building SASS"
-sass $SASS_OPTS scss/style.scss:css/style.css
+sass $SASS_OPTS --style expanded scss/style.scss:css/style.css
