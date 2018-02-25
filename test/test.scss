@@ -5,7 +5,7 @@ $grids: (
   ),
 );
 
-$_grid-test-mode: true;
+$-tiny-grid-test: true;
 
 @import '../scss/tiny-grid.scss';
 @import 'test-outputs';
@@ -26,6 +26,18 @@ $_grid-test-mode: true;
       @include expect {
         color: #000;
         width: 100px;
+      }
+    }
+  }
+
+  @include it('Checks for an error') {
+    @include assert {
+      @include output {
+        @include map-to-css('cat');
+      }
+
+      @include expect {
+        error: "Cannot output a non-map value cat as CSS.";
       }
     }
   }
@@ -53,7 +65,7 @@ $_grid-test-mode: true;
   }
 }
 
-@include describe('tiny-grid') {
+@include describe('tiny-grid mixin') {
   @include it('Generates a basic 12-column grid') {
     $grid: (
       main: (
@@ -95,6 +107,44 @@ $_grid-test-mode: true;
       }
     }
   }
+
+  @include it('Rejects non-integer column values') {
+    $grids: (
+      main: (
+        columns: 'cat',
+        gap: 1rem,
+      ),
+    );
+
+    @include assert {
+      @include output {
+        @include tiny-grid($grids);
+      }
+      
+      @include expect {
+        error: "The number of columns must be a plain integer. cat is invalid.";
+      }
+    };
+  };
+
+  @include it('Rejects zero column values') {
+    $grids: (
+      main: (
+        columns: -1,
+        gap: 1rem,
+      ),
+    );
+
+    @include assert {
+      @include output {
+        @include tiny-grid($grids);
+      }
+      
+      @include expect {
+        error: "The number of columns must be greater than 0. -1 is invalid.";
+      }
+    };
+  };
 }
 
 @include report;
