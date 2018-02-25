@@ -8,6 +8,7 @@ $grids: (
 $_grid-test-mode: true;
 
 @import '../scss/tiny-grid.scss';
+@import 'test-outputs';
 @import 'true';
 
 @include describe('map-to-css mixin') {
@@ -49,6 +50,50 @@ $_grid-test-mode: true;
 
   @include it('Checks whether a string value is a plain integer') {
     @include assert-equal(is-plain-integer('3'), false);
+  }
+}
+
+@include describe('tiny-grid') {
+  @include it('Generates a basic 12-column grid') {
+    $grid: (
+      main: (
+        columns: 12,
+        gap: 1rem,
+      ),
+    );
+
+    @include assert {
+      @include output {
+        @include tiny-grid($grids);
+      }
+      
+      @include expect {
+        @include test-output-single-grid;
+      }
+    }
+  }
+
+  @include it('Generates a 12-column and 2-column grid') {
+    $grids: (
+      main: (
+        columns: 12,
+        gap: 1rem,
+      ),
+      sidebar: (
+        columns: 2,
+        gap: 20px,
+      ),
+    );
+
+    @include assert {
+      @include output {
+        @include tiny-grid($grids);
+      }
+      
+      @include expect {
+        @include test-output-two-grids;
+      }
+    }
   }
 }
 
