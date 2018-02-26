@@ -1,11 +1,4 @@
-$grids: (
-  main: (
-    columns: 12,
-    gap: 1rem,
-  ),
-);
-
-$-tiny-grid-test: true;
+$_tiny-grid-test: true;
 
 @import '../scss/tiny-grid.scss';
 @import 'test-outputs';
@@ -67,7 +60,7 @@ $-tiny-grid-test: true;
 
 @include describe('tiny-grid mixin') {
   @include it('Generates a basic 12-column grid') {
-    $grid: (
+    $grids: (
       main: (
         columns: 12,
         gap: 1rem,
